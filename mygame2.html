@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+html, body{
+    height: 100%; 
+    width: 100%;
+
+}
+
+#main{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    background-color: turquoise;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+}
+#hero{
+    width: 90%;
+    height: 90%;
+    background-color: #fff;
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+     border-radius: 10px;
+
+} 
+#top{
+     width: 100%;
+     height: 80px;
+     background-color:moccasin;
+     border-start-end-radius: 10px;    
+     border-start-start-radius: 10px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 50px;
+ }
+
+.box{
+    padding: 20px;
+    background-color: turquoise;
+    border-radius: 10px;
+}
+#btm{
+    width: 100%;
+    height: calc(100% - 80px);
+    background-color: #fff;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.bubble{
+     width: 50%;
+     height: 80px;
+     background-color:turquoise;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+
+}
+.bubble:hover{
+    background-color: rgb(189,212,210);
+    transition: all ease 0.3s;
+}
+.panel {
+    margin-top: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: navy;
+}
+ 
+.question {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+ 
+.options {
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    top: 40%;
+    left: 40%;
+}
+ 
+button {
+    margin-right: 75px;
+    margin-top: 8%;
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #4f98c2;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+ 
+#score {
+    font-size: 30px;
+    color: darkslategray;
+}
+    </style>
+</head>
+<body>
+    <div id="main"> 
+        <div id="hero">
+            <div id="top">
+                <div class="one">
+                    <h4>Score</h4>
+                    <div id="scorediv" class="box">0</div>
+                </div>
+                <div class="one">
+                     <h4>Timer:</h4>     
+                <div id="timerdiv" class="box">0</div>
+                </div>
+                <div class="one">
+                    <button style="background-color: turquoise;border-radius: 10px;"><a href="jsqna.html" style="text-decoration: none; color: black;">Back To Home</a></button>
+                </div>
+            </div>
+                <div class="panel">
+                    <h1>What is the output of below code?</h1><br>
+                    <div class="question" id="ques"></div>
+                    <div class="options" id="opt"></div>
+                    <div>
+                        <button onclick="checkAns()" id="btn">SUBMIT</button>
+                    </div>
+                    
+                    <div id="score"></div>
+                </div>
+        </div>
+    </div>
+    <script>
+    const Questions = 
+[{
+    q: `var car = new Vehicle("Honda", "white", "2010", "UK");
+console.log(car);
+function Vehicle(model, color, year, country) {
+this.model = model;
+this.color = color;
+this.year = year;
+this.country = country;
+}
+`,
+    a: [{ text: "RefrenceError", isCorrect: false },
+    { text: "undefined", isCorrect: false },
+    { text: "null", isCorrect: false },
+    { text: `{model: "Honda", color: "white", year: "2010", country: "UK"}`, isCorrect: true }
+    ]
+ 
+},
+{
+    q: `function foo() {
+let x = y = 0;
+x++;
+y++;
+return x;
+}`,
+    a: [{ text: "1, undefined and undefined", isCorrect: false  },
+    { text: `ReferenceError: X is not defined`, isCorrect: false },
+    { text: "1, undefined and number", isCorrect: true },
+    { text: "1, number and number", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `console.log(0.1 + 0.2 === 0.3);`,
+    a: [{ text: "true", isCorrect: false },
+    { text: "false", isCorrect: true },
+    { text: "syntax-error", isCorrect: false },
+    { text: "undefined", isCorrect: false }
+    ]
+ 
+},
+{
+    q:  `function main(){
+console.log('A');
+setTimeout(
+function print(){ console.log('B'); }
+,0);
+console.log('C');
+}
+main();`,
+    a: [{ text: "A,B,C", isCorrect: false },
+    { text: "B,A,C", isCorrect: false },
+    { text: "A,C", isCorrect: false },
+    { text: "A,C,B", isCorrect: true }
+    ]
+ 
+},
+{
+    q: `function foo() {
+return
+{
+message: "Hello World"
+};
+}
+console.log(foo());`,
+    a: [{ text: "undefined", isCorrect: true },
+    { text: "syntax-error", isCorrect: false },
+    { text: `Object {message: "Hello World"}`, isCorrect: false },
+    { text: "hello world", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var myChars = ['a', 'b', 'c', 'd']
+delete myChars[0];
+console.log(myChars);
+console.log(myChars[0]);
+console.log(myChars.length);`,
+    a: [{ text: "[empty, 'b', 'c', 'd'], empty, 3", isCorrect: false },
+    { text: "[null, 'b', 'c', 'd'], empty, 3", isCorrect: false },
+    { text: " [empty, 'b', 'c', 'd'], undefined, 4", isCorrect: true },
+    { text: " [null, 'b', 'c', 'd'], undefined, 4", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const obj = {
+prop1: function() { return 0 },
+prop2() { return 1 },
+['prop' + 3]() { return 2 }
+}
+console.log(obj.prop1());
+console.log(obj.prop2());
+console.log(obj.prop3());`,
+    a: [{ text: ": 0,1,2", isCorrect: true },
+    { text: " 0, { return 1 }, 2", isCorrect: false },
+    { text: " 0, { return 1 }, { return 2 }", isCorrect: false },
+    { text: " 0,1,undefined", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `console.log(1 < 2 < 3);
+console.log(3 > 2 > 1);`,
+    a: [{ text: "true,true", isCorrect: false },
+    { text: "true,false", isCorrect: true },
+    { text: "SyntaxError, SyntaxError,", isCorrect: false },
+    { text: "false,false", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var array1 = new Array(3);
+console.log(array1);
+var array2 = [];
+array2[2] = 100;
+console.log(array2);
+var array3 = [,,,];
+console.log(array3);`,
+    a: [{ text: `[undefined x 3], [undefined x 2, 100], [undefined x 3]`, isCorrect: false },
+    { text: ` [empty x 3], [empty x 2, 100], [empty x 3]`, isCorrect: true },
+    { text: ` [null x 3], [null x 2, 100], [null x 3]`, isCorrect: false },
+    { text: ` [], [100], []`, isCorrect: false }
+    ]
+ 
+},
+{
+    q: `console.log(10 + '10');
+console.log(10 - '10');`,
+    a: [{ text: "20,0", isCorrect: false },
+    { text: "1010,0", isCorrect: true },
+    { text: "NaN,NaN", isCorrect: false },
+    { text: "1010,10-10", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let count = 10;
+(function innerFunc() {
+if (count === 10) {
+let count = 11;
+console.log(count);
+}
+console.log(count);`,
+    a: [{ text: "10,10", isCorrect: false },
+    { text: "11,11", isCorrect: false },
+    { text: "11,10", isCorrect: true },
+    { text: "10,11", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const USER = {'age': 30};
+USER.age = 25;
+console.log(USER.age);`,
+    a: [{ text: "30", isCorrect: false },
+    { text: "UncaughtTypeError", isCorrect: false },
+    { text: "25", isCorrect: true },
+    { text: "SyntaxError", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const [x, ...y,] = [1, 2, 3, 4];
+console.log(x, y);`,
+    a: [{ text: "1, [2, 3, 4]", isCorrect: false },
+    { text: "1, [2, 3]", isCorrect: false },
+    { text: "1, [2]", isCorrect: false },
+    { text: "syntaxerror", isCorrect: true }
+    ]
+ 
+},
+{
+    q: `let [a, ...b,] = [1, 2, 3, 4, 5];
+console.log(a, b);`,
+    a: [{ text: "1, [2, 3, 4, 5]", isCorrect: false },
+    { text: "1, {2, 3, 4, 5}", isCorrect: false },
+    { text: "SyntaxError", isCorrect: true },
+    { text: "1, [2, 3, 4]", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let myNumber = 100;
+let myString = '100';
+if (!typeof myNumber === "string") {
+console.log("It is not a string!");
+} else {
+console.log("It is a string!");
+}
+if (!typeof myString === "number"){
+console.log("It is not a number!")
+} else {
+console.log("It is a number!");
+}`,
+    a: [{ text: "SyntaxError", isCorrect: false },
+    { text: "It is not a string!, It is not a number!", isCorrect: true },
+    { text: "It is not a string!, It is a number!", isCorrect: false },
+    { text: "It is a string!, It is a number!", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function add(item, items = []) {
+items.push(item);
+return items;
+}
+console.log(add('Orange'));
+console.log(add('Apple'));`,
+    a: [{ text: " ['Orange'], ['Orange', 'Apple']", isCorrect: true },
+    { text: " ['Orange'], ['Apple']", isCorrect: false },
+    { text: "SyntaxError", isCorrect: false },
+    { text: "undefined,undefined", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function greet(greeting, name, message = greeting + ' ' + name) {
+console.log([greeting, name, message]);
+}
+greet('Hello', 'John');
+greet('Hello', 'John', 'Good morning!');`,
+    a: [{ text: "SyntaxError", isCorrect: false },
+    { text: "['Hello', 'John', 'Hello John'], ['Hello', 'John', 'Good morning!']", isCorrect: true },
+    { text: "RefrenceError", isCorrect: false },
+    { text: "undefined,undefined", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `async function func() {
+return 10;
+}
+console.log(func());`,
+    a: [{ text: " Promise {<fulfilled>: 10}", isCorrect: false },
+    { text: "10", isCorrect: true },
+    { text: "SyntaxError", isCorrect: false },
+    { text: "Promise {<rejected>: 10}", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `console.log([0] == false);
+if([0]) {
+console.log("I'm True");
+} else {
+console.log("I'm False");
+}`,
+    a: [{ text: " True, I'm True", isCorrect: false },
+    { text: "True, I'm False", isCorrect: true },
+    { text: "False, I'm True", isCorrect: false },
+    { text: " False, I'm False", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const arrowFunc = () => arguments.length;
+console.log(arrowFunc(1, 2, 3));`,
+    a: [{ text: "ReferenceError: arguments is not defined", isCorrect: true },
+    { text: "3", isCorrect: false },
+    { text: "undefined", isCorrect: false },
+    { text: "null", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let numbers = [1, 2, 3, 4, NaN];
+console.log(numbers.indexOf(NaN));`,
+    a: [{ text: "4", isCorrect: false },
+    { text: "NaN", isCorrect: false },
+    { text: "SyntaxError", isCorrect: false },
+    { text: "-1", isCorrect: true }
+    ]
+ 
+},
+{
+    q: `function myFun(x, y, ...manyMoreArgs) {
+console.log(manyMoreArgs)
+}
+myFun(1, 2, 3, 4, 5);
+myFun(1, 2);`,
+    a: [{ text: "[3, 4, 5], undefined", isCorrect: false },
+    { text: "SyntaxError", isCorrect: false },
+    { text: " [3, 4, 5], []", isCorrect: true },
+    { text: " [3, 4, 5], [undefined]", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var string1 = "40";  
+var value=50;  
+alert( string1+value);`,
+    a: [{ text: "4090", isCorrect: false },
+    { text: "90", isCorrect: false },
+    { text: "4050", isCorrect: true },
+    { text: "Exception", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a=0;  
+var b =0;  
+while (a <3)  
+{  
+    a++;  
+    b += a;  
+    console.log(b);  
+}`,
+    a: [{ text: "136", isCorrect: true },
+    { text: "01", isCorrect: false },
+    { text: "013", isCorrect: false },
+    { text: "123", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function myfunc() {
+  console.log(name);
+  console.log(age);
+  var name = 'BBBootstrap';
+  let age = 21;
+}
+myfunc();`,
+    a: [{ text: "undefined and ReferenceError", isCorrect: true },
+    { text: "BBBootstrap and undefined", isCorrect: false },
+    { text: "ReferenceError and 21", isCorrect: false },
+    { text: "BBBootstrap and ReferenceError", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1);
+}`,
+    a: [{ text: "1 1 1", isCorrect: false },
+    { text: "1 2 3", isCorrect: false },
+    { text: "3 3 3", isCorrect: true },
+    { text: "3 2 1", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var x;
+console.log(x); 
+x = 25;`,
+    a: [{ text: "undefined", isCorrect: true },
+    { text: "NaN", isCorrect: false },
+    { text: "25", isCorrect: false },
+    { text: "RefrenceError", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function output() {
+    x = 33;
+    console.log(x);
+    var x;
+}
+output();`,
+    a: [{ text: "undefined", isCorrect: false },
+    { text: "33", isCorrect: true },
+    { text: "NaN", isCorrect: false },
+    { text: "RefrenceError", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const res = ['1', '1a', '0', -1, true, false].map(Number).filter(Boolean);
+console.log(res);`,
+    a: [{ text: "[1,1]", isCorrect: false },
+    { text: "[1,-1,1]", isCorrect: true },
+    { text: "[1,true]", isCorrect: false },
+    { text: "[1,-1,1,NaN]", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let c = { message: 'Hello!' };
+let d;
+d = c;
+c.greeting = 'BBBootstrap';
+console.log(d.message);`,
+    a: [{ text: "Hello!", isCorrect: false },
+    { text: "undefined", isCorrect: false },
+    { text: "refrenceError", isCorrect: false },
+    { text: "BBBootstrap", isCorrect: true }
+    ]
+ 
+},
+{
+    q: `let a = 25;
+let c = 25;
+let b = new Number(25);
+console.log(a == b);
+console.log(a === b);
+console.log(b == c);`,
+    a: [{ text: "false true false", isCorrect: false },
+    { text: "true false true", isCorrect: true },
+    { text: "false false true", isCorrect: false },
+    { text: "true true true", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let message;
+messge = {};
+console.log(message);`,
+    a: [{ text: "undefined", isCorrect: true },
+    { text: "{}", isCorrect: false },
+    { text: "RefrenceError", isCorrect: false },
+    { text: "None of the above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `let x = 5+3+"3";
+Console.log(x);`,
+    a: [{ text: "11", isCorrect: false },
+    { text: "8", isCorrect: false },
+    { text: "83", isCorrect: true },
+    { text: "None of the Above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a = "Scaler";
+var result = a.substring(2, 4);
+document.write(result);`,
+    a: [{ text: "al", isCorrect: true },
+    { text: "ale", isCorrect: false },
+    { text: "cal", isCorrect: false },
+    { text: "caler", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var x=12;
+var y=8;
+var res=eval("x+y");
+document.write(res);`,
+    a: [{ text: "20", isCorrect: true },
+    { text: "x+y", isCorrect: false },
+    { text: "128", isCorrect: false },
+    { text: "None of the above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function solve(arr, rotations){
+ if(rotations == 0) return arr;
+ for(let i = 0; i < rotations; i++){
+   let element = arr.pop();
+   arr.unshift(element);
+ }
+ return arr;
+}
+// solve([44, 1, 22, 111], 5);`,
+    a: [{ text: "[111,44,1,22]", isCorrect: true },
+    { text: "[44,1,22,111]", isCorrect: false },
+    { text: "[111,144,1,22]", isCorrect: false },
+    { text: "[1,44,111,22]", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function Func()  
+{  
+document.getElementById("example").innerHTML=Math.sqrt(81);  
+}  `,
+    a: [{ text: "9", isCorrect: true },
+    { text: "81", isCorrect: false },
+    { text: "error", isCorrect: false },
+    { text: "0", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a = 1;  
+var b = 0;  
+while (a <= 3)  
+{  
+   a++;  
+   b += a * 2;  
+   print(b);
+}`,
+    a: [{ text: "4 10 18", isCorrect: true },
+    { text: "1 2 3", isCorrect: false },
+    { text: "1 4 7", isCorrect: false },
+    { text: "None of the above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a = Math.max();
+var b = Math.min();
+print(a);
+print(b);`,
+    a: [{ text: "infinity,infinity", isCorrect: false },
+    { text: "infinity,-infinity", isCorrect: false },
+    { text: "-infinity,infinity", isCorrect: true },
+    { text: "-infinity,-infinity", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a = true + true + true * 3;
+print(a)`,
+    a: [{ text: "3", isCorrect: false },
+    { text: "0", isCorrect: false },
+    { text: "5", isCorrect: true },
+    { text: "error", isCorrect: false }
+    ]
+ 
+},
+{
+    q: "print(NaN === NaN);",
+    a: [{ text: "true", isCorrect: false },
+    { text: "false", isCorrect: true },
+    { text: "undefined", isCorrect: false },
+    { text: "error", isCorrect: false }
+    ]
+ 
+},
+{
+    q: "print(typeof(NaN));",
+    a: [{ text: "Object", isCorrect: false },
+    { text: "Number", isCorrect: true },
+    { text: "String", isCorrect: false },
+    { text: "None of the Above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `print(parseInt("123Hello"));
+print(parseInt("Hello123"));`,
+    a: [{ text: "123 123", isCorrect: false },
+    { text: "NaN NaN", isCorrect: false },
+    { text: "123 NaN", isCorrect: true },
+    { text: "123Hello Hello123", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `var a = "hello";
+var sum = 0;
+for(var i = 0; i < a.length; i++) {
+   sum += (a[i] - 'a');
+}
+print(sum);`,
+    a: [{ text: "47", isCorrect: false },
+    { text: "NaN", isCorrect: true },
+    { text: "0", isCorrect: false },
+    { text: "None of the Above", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `function dog() {
+   print("I am a dog.");
+}
+dog.sound = "Bark";`,
+    a: [{ text: "Syntax Error", isCorrect: false },
+    { text: "I am a dog gets printed", isCorrect: false },
+    { text: "RefrenceError", isCorrect: false },
+    { text: "NothingHappens", isCorrect: true }
+    ]
+ 
+},
+{
+    q: `function test(...args) {
+ console.log(typeof args);
+}
+test(12);`,
+    a: [{ text: "Object", isCorrect: true },
+    { text: "Array", isCorrect: false },
+    { text: "NaN", isCorrect: false },
+    { text: "number", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const obj1 = {first: 20, second: 30, first: 50};
+console.log(obj1);`,
+    a: [{ text: "{first:20,second:30}", isCorrect: false },
+    { text: "{first:50,second:30}", isCorrect: true },
+    { text: "{first:20,second:30,first:50}", isCorrect: false },
+    { text: "SyntaxError", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `const obj1 = {Name: "Hello", Age: 16};
+const obj2 = {Name: "Hello", Age: 16};
+print(obj1 === obj2);`,
+    a: [{ text: "true", isCorrect: false },
+    { text: "false", isCorrect: true },
+    { text: "undefined", isCorrect: false },
+    { text: "None of the Above", isCorrect: false }
+    ]
+ 
+},
+{
+    q:  `a = [1, 2, 3, 4, 5];
+print(a.splice(2, 3));`,
+    a: [{ text: "3 4 5", isCorrect: true },
+    { text: "2 3 4 5", isCorrect: false },
+    { text: "3 4", isCorrect: false },
+    { text: "3", isCorrect: false }
+    ]
+ 
+},
+{
+    q: `a=[1,2,3,4,5];
+    print(a[5])`,
+    a: [{ text: "5", isCorrect: false },
+    { text: "undefined", isCorrect: true },
+    { text: "syntaxerror", isCorrect: false },
+    { text: "None of the Above", isCorrect: false }
+    ]
+ 
+}
+ 
+]
+ 
+let currQuestion = 0
+let score = 0
+let my;
+function loadQues() {
+    const question = document.getElementById("ques")
+    const opt = document.getElementById("opt")
+ 
+    question.textContent = `Q${currQuestion+1}. `+Questions[currQuestion].q;
+    opt.innerHTML = ""
+ 
+    for (let i = 0; i < Questions[currQuestion].a.length; i++) {
+        const choicesdiv = document.createElement("div");
+        const choice = document.createElement("input");
+        const choiceLabel = document.createElement("label");
+ 
+        choice.type = "radio";
+        choice.name = "answer";
+        choice.value = i;
+ 
+        choiceLabel.textContent = `${i+1}. `+Questions[currQuestion].a[i].text;
+ 
+        choicesdiv.appendChild(choice);
+        choicesdiv.appendChild(choiceLabel);
+        opt.appendChild(choicesdiv);
+    }
+    startTimer();
+}
+
+loadQues();
+
+function loadScore() {
+    const totalScore = document.getElementById("score")
+    if(score>40 && score<=50){
+        totalScore.textContent = `You scored ${score} out of ${Questions.length} and your prize is 20rs Dairymilk!`;
+    }
+    else if(score>30 && score<=40){
+        totalScore.textContent = `You scored ${score} out of ${Questions.length} and your prize is 10rs Dairymilk!`;
+    }
+    else if(score>20 && score<=30){
+        totalScore.textContent = `You scored ${score} out of ${Questions.length} and your prize is 5rs Dairymilk!`;
+    }
+    else if(score>10 && score<=20){
+        totalScore.textContent = `You scored ${score} out of ${Questions.length} and your prize is 2rs Eclairs!`;
+    }
+    else{
+        totalScore.textContent = `You scored ${score} out of ${Questions.length} and your prize is Nothing study hard!`;
+    }
+   
+}
+ 
+ 
+function nextQuestion() {
+    if (currQuestion < Questions.length - 1) {
+        currQuestion++;
+        document.getElementById("scorediv").textContent=score;
+        loadQues();        
+    } else {
+        document.getElementById("opt").remove()
+        document.getElementById("ques").remove()
+        document.getElementById("btn").remove()
+        document.getElementById("scorediv").textContent=score;
+        loadScore();
+    }
+}
+ 
+function checkAns() {
+    if(document.querySelector('input[name="answer"]:checked')!=null){
+        const selectedAns = document.querySelector('input[name="answer"]:checked').value;
+    console.log(selectedAns);
+    if (Questions[currQuestion].a[parseInt(selectedAns)].isCorrect) {
+        score++;
+        cleartimer();
+        nextQuestion();
+    } else {
+        cleartimer();
+        nextQuestion();
+    }
+    }
+    else{
+        cleartimer();
+        nextQuestion();
+    }    
+}
+function startTimer(){
+    let timer=90;
+ my=setInterval(function(){ 
+    if(timer>0){
+    timer-- 
+    document.querySelector("#timerdiv").textContent=timer;
+}
+else{
+    checkAns();
+}
+}
+,1000);
+}
+function cleartimer(){
+    console.log(my);
+  clearInterval(my);  
+}
+    
+    
+</script>  
+</body>
+</html>

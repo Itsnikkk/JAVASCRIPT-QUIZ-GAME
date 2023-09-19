@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+html, body{
+    height: 100%; 
+    width: 100%;
+
+}
+
+#main{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    background-color: turquoise;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+}
+#hero{
+    width: 90%;
+    height: 90%;
+    background-color: #fff;
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+     border-radius: 10px;
+
+} 
+#top{
+     width: 100%;
+     height: 80px;
+     background-color:moccasin;
+     border-start-end-radius: 10px;    
+     border-start-start-radius: 10px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 50px;
+ }
+ #div1{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 400px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+#div2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 400px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+#div3{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+}
+option{
+    font-size: 24px;
+}
+        
+    </style>
+        
+</head>
+<body>
+    <div id="main"> 
+        <div id="hero">
+            <div id="top">
+                <h1 style="color: rgb(82, 0, 0);">Welcome To JavaScript Quiz </h1>              
+            </div>
+            <div id="div1">
+            <div id="div2">
+                 <h2>let start=There are two Quiz Theory and Pesudocodes => (Both have 50 questions) ? for Theory part 60 seconds are given for each question : for Pesudocodes part 90 seconds are given for each question.</h2>
+                 <h2>Start Here</h2>
+                 <h2><a href="mygame.html" style="color: rgb(167, 0, 0); text-decoration: none;">Theory</a></h2>
+                 <h2><a href="mygame2.html" style="color: rgb(167, 0, 0); text-decoration: none;">Pesudocodes</a></h2>
+            </div>
+            <div id="div3">
+                <option>PRIZES</option>
+                <option>41 to 50 => DairyMilk 20rs</option>
+                <option>31 to 40 => DairyMilk 10rs</option>
+                <option>21 to 30 => DairyMilk 5rs</option>
+                <option>11 to 20 => Eclairs 2rs</option>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+   
+</body>
+</html>
